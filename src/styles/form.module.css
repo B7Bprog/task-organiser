@@ -8,3 +8,10 @@
   border-color: white;
   border-width: 0.1rem;
 }
+label {
+  display: block;
+  margin: 1rem;
+}
+textarea {
+  resize: none;
+}

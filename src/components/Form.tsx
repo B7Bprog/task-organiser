@@ -18,11 +18,11 @@ const Form: FC<{ setTasks: (value: []) => void }> = ({ setTasks }: any) => {
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
       <div id={styles.title_input}>
-        <label>Add task title:</label>
+        <label>Title:</label>
         <input value={title} onChange={(e) => setTitle(e.target.value)} />
       </div>
       <div id={styles.description_input}>
-        <label>Add task description:</label>
+        <label>Description:</label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
