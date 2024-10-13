@@ -1,7 +1,8 @@
-import { app, BrowserWindow, screen } from "electron";
+import { app, BrowserWindow, ipcMain, screen } from "electron";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import fs from "fs/promises";
 
 createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -42,6 +43,8 @@ function createWindow() {
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
@@ -60,7 +63,7 @@ function createWindow() {
   win.resizable = false;
   // DEV options:
 
-  // win.webContents.openDevTools();
+  win.webContents.openDevTools();
   // win.on("move", () => {
   //   if (win) {
   //     const bounds = win.getBounds();
@@ -89,6 +92,10 @@ app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+});
+
+ipcMain.on("saveTasks", (event, content) => {
+  fs.writeFile("./tasks.json", content);
 });
 
 app.whenReady().then(createWindow);

@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import "./App.css";
 import Header from "./components/Header";
 import Form from "./components/Form";
 import Contents from "./components/Contents";
 import TaskList from "./components/TaskList";
 import styles from "./App.module.css";
+const { ipcRenderer } = require("electron");
 
 function App() {
   const [tasks, setTasks] = useState([
     { title: "firstTask", description: "task description here" },
   ]);
+
+  useEffect(() => {
+    ipcRenderer.send("saveTasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   return (
     <div>
