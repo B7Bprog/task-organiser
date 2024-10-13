@@ -1,5 +1,11 @@
+import styles from "../styles/header.module.css";
+
 const Header = () => {
-  return <h1>Task list</h1>;
+  return (
+    <div id={styles.header}>
+      <h1>Task list</h1>
+    </div>
+  );
 };
 
 export default Header;
