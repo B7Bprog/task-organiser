@@ -4,7 +4,9 @@ import Header from "./components/Header";
 import Form from "./components/Form";
 
 function App() {
-  const [tasks, setTasks] = useState(["hello"]);
+  const [tasks, setTasks] = useState([
+    { title: "firstTask", description: "task description here" },
+  ]);
 
   return (
     <div>
@@ -12,7 +14,12 @@ function App() {
       <Form setTasks={setTasks} />
       <ul>
         {tasks.map((task) => {
-          return <li>{task}</li>;
+          return (
+            <li>
+              <h2>{task.title}</h2>
+              <p>{task.description}</p>
+            </li>
+          );
         })}
       </ul>
     </div>
