@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, screen } from "electron";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -29,7 +29,16 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
 let win: BrowserWindow | null;
 
 function createWindow() {
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const scaleFactor = primaryDisplay.scaleFactor;
+
+  const width = 800;
+  const height = 500;
+
   win = new BrowserWindow({
+    width: width * scaleFactor,
+    height: height * scaleFactor,
+
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
@@ -47,6 +56,21 @@ function createWindow() {
     // win.loadFile('dist/index.html')
     win.loadFile(path.join(RENDERER_DIST, "index.html"));
   }
+
+  win.resizable = false;
+  // DEV options:
+
+  // win.webContents.openDevTools();
+  // win.on("move", () => {
+  //   if (win) {
+  //     const bounds = win.getBounds();
+  //     const display = screen.getDisplayNearestPoint({
+  //       x: bounds.x,
+  //       y: bounds.y,
+  //     });
+  //     console.log("Current scaleFactor:", display.scaleFactor);
+  //   }
+  // });
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common
