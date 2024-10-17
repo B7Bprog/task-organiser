@@ -98,4 +98,15 @@ ipcMain.on("saveTasks", (event, content) => {
   fs.writeFile("./tasks.json", content);
 });
 
+ipcMain.on("loadTasks", (event) => {
+  fs.readFile("./tasks.json", "utf-8")
+    .then((data) => {
+      event.reply("loadTasksResponse", data);
+    })
+    .catch((err) => {
+      console.error("Failed to read tasks file:", err);
+      event.reply("loadTasksResponse", "[]"); // Send an empty array if there is an error
+    });
+});
+
 app.whenReady().then(createWindow);

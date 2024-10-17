@@ -8,12 +8,31 @@ import styles from "./App.module.css";
 const { ipcRenderer } = require("electron");
 
 function App() {
-  const [tasks, setTasks] = useState([
-    { title: "firstTask", description: "task description here" },
-  ]);
+  const [tasks, setTasks] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    ipcRenderer.send("saveTasks", JSON.stringify(tasks));
+    ipcRenderer.send("loadTasks");
+
+    ipcRenderer.on("loadTasksResponse", (event, data) => {
+      console.log(data, "data here");
+
+      setTasks(JSON.parse(data));
+      setIsLoaded(true);
+    });
+
+    return () => {
+      ipcRenderer.removeAllListeners("loadTasksResponse");
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      ipcRenderer.send("saveTasks", JSON.stringify(tasks));
+    }
+    return () => {
+      ipcRenderer.removeAllListeners("loadTasksResponse");
+    };
   }, [tasks]);
 
   return (
