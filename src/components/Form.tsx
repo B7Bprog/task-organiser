@@ -1,5 +1,6 @@
 import { FC, FormEvent, useState } from "react";
 import styles from "../styles/form.module.css";
+import { v1 as uuidv1 } from "uuid";
 
 const Form: FC<{ setTasks: (value: []) => void }> = ({ setTasks }: any) => {
   const [description, setDescription] = useState("");
@@ -8,7 +9,7 @@ const Form: FC<{ setTasks: (value: []) => void }> = ({ setTasks }: any) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setTasks((tasks: []) => {
-      const fullTask = { title: title, description: description };
+      const fullTask = { id: uuidv1(), title: title, description: description };
       return [fullTask, ...tasks];
     });
     setDescription("");
